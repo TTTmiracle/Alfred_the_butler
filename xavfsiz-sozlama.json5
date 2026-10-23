@@ -1,0 +1,39 @@
+// Jarvis uchun xavfsiz boshlang'ich sozlamalar.
+// setup.sh __TELEGRAM_ID__ va __BOT_TOKEN__ ni o'zingiznikiga almashtiradi.
+{
+  agents: {
+    defaults: {
+      userTimezone: "Asia/Tashkent",
+      // O'zi tekshirib turish: har 30 daqiqa emas, 2 soatda bir, faqat kunduzi.
+      // Har tekshiruv — pullik so'rov. Shunday qilib kuniga ~8 ta bo'ladi, 48 ta emas.
+      heartbeat: {
+        every: "2h",
+        activeHours: { start: "08:00", end: "23:00", timezone: "Asia/Tashkent" },
+        lightContext: true,
+      },
+    },
+  },
+  channels: {
+    telegram: {
+      enabled: true,
+      botToken: "__BOT_TOKEN__",
+      // Faqat siz yoza olasiz. Boshqalar yozsa — javob bermaydi.
+      dmPolicy: "allowlist",
+      allowFrom: [__TELEGRAM_ID__],
+      // Guruhlarda ishlamaydi.
+      groupPolicy: "disabled",
+      // Ruxsat berilmagan buyruqdan oldin Telegram'da sizdan so'raydi.
+      execApprovals: { enabled: true, approvers: [__TELEGRAM_ID__], target: "dm" },
+    },
+  },
+  tools: {
+    // Serverdagi buyruqlar: ro'yxatdagilari — o'zi, qolgani — sizdan so'rab.
+    exec: { security: "allowlist", ask: "on-miss" },
+    // Fayllar bilan faqat o'z papkasida (workspace) ishlaydi.
+    fs: { workspaceOnly: true },
+    // Kuchaytirilgan (root) huquqlar o'chiq.
+    elevated: { enabled: false },
+    // Sahifani o'qish (ob-havo uchun) yoqiq.
+    web: { fetch: { enabled: true } },
+  },
+}
