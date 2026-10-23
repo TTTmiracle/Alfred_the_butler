@@ -94,6 +94,18 @@ Yoki shunchaki Telegram'da ayting: *"Bundan keyin javoblarni ruscha yoz, USER.md
 
 ---
 
+## Notion'ni ulash (ixtiyoriy)
+
+Yordamchingiz Notion sahifalaringizni o'qiydi va yozadi (MCP orqali, 13-dars):
+
+```bash
+bash notion.sh
+```
+
+Avval Notion'da integration yarating — 5 daqiqa: [docs/notion.md](docs/notion.md)
+
+---
+
 ## Foydali buyruqlar
 
 ```bash
@@ -160,4 +172,8 @@ openclaw uninstall
 
 ---
 
-📚 [Mahalliy AI va "Jarvis stansiya" (Mac Studio, Mac mini, DGX Spark)](docs/mahalliy-ai.md)
+📚 [Mahalliy AI va "Jarvis stansiya" (Mac Studio, Mac mini, DGX Spark)](docs/mahalliy-ai.md) · [Notion ulash](docs/notion.md)
+
+---
+
+*Bu repo **AI Coding & Automation** kursining amaliy darsi uchun tayyorlangan.*

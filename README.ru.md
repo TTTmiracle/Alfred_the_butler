@@ -97,6 +97,18 @@ nano ~/.openclaw/workspace/SOUL.md
 
 ---
 
+## Подключение Notion (по желанию)
+
+Помощник читает и пишет ваши страницы в Notion (через MCP, урок 13):
+
+```bash
+bash notion.sh
+```
+
+Сначала создайте интеграцию в Notion — 5 минут: [docs/notion.ru.md](docs/notion.ru.md)
+
+---
+
 ## Полезные команды
 
 ```bash
@@ -163,4 +175,8 @@ openclaw uninstall
 
 ---
 
-📚 [Локальный AI и «Jarvis-станция» (Mac Studio, Mac mini, DGX Spark)](docs/mahalliy-ai.ru.md)
+📚 [Локальный AI и «Jarvis-станция» (Mac Studio, Mac mini, DGX Spark)](docs/mahalliy-ai.ru.md) · [Подключение Notion](docs/notion.ru.md)
+
+---
+
+*Этот репозиторий подготовлен для практического урока курса **AI Coding & Automation**.*
