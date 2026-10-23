@@ -51,12 +51,12 @@ ssh root@IP_СЕРВЕРА
 Скачайте репозиторий и запустите установку:
 
 ```bash
-git clone https://github.com/TTTmiracle/jarvis.git
-cd jarvis
+git clone https://github.com/TTTmiracle/Alfred_the_butler.git
+cd Alfred_the_butler
 bash setup.sh
 ```
 
-`setup.sh` спросит: токен бота → Telegram ID → какой AI → API-ключ. Остальное сделает сам:
+`setup.sh` спросит: токен бота → Telegram ID → имя помощника (Jarvis, Alfred...) → какой AI → API-ключ. Остальное сделает сам:
 
 1. Проверит сервер (`check.sh`) — есть ли связь с Telegram, интернет, RAM
 2. Установит OpenClaw

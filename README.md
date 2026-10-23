@@ -51,12 +51,12 @@ ssh root@SERVER_IP
 Repo'ni yuklab, o'rnatishni boshlang:
 
 ```bash
-git clone https://github.com/TTTmiracle/jarvis.git
-cd jarvis
+git clone https://github.com/TTTmiracle/Alfred_the_butler.git
+cd Alfred_the_butler
 bash setup.sh
 ```
 
-`setup.sh` so'raydi: bot tokeni → Telegram ID → qaysi AI → API kalit. Qolganini o'zi qiladi:
+`setup.sh` so'raydi: bot tokeni → Telegram ID → yordamchi ismi (Jarvis, Alfred...) → qaysi AI → API kalit. Qolganini o'zi qiladi:
 
 1. Serverni tekshiradi (`check.sh`) — Telegram'ga ulanish bormi, internet, RAM
 2. OpenClaw'ni o'rnatadi

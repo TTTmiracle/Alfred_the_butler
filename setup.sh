@@ -18,6 +18,9 @@ read -r -p "   BOT TOKEN: " BOT_TOKEN
 echo "   Sizning Telegram ID raqamingiz (faqat raqam). Bilmasangiz: @userinfobot ga /start yozing."
 read -r -p "   TELEGRAM ID: " TG_ID
 [[ "$TG_ID" =~ ^[0-9]+$ ]] || fail "ID faqat raqamlardan iborat bo'lishi kerak."
+read -r -p "   Yordamchingiz ismi (Enter = Jarvis): " NAME
+NAME="${NAME:-Jarvis}"
+[[ "$NAME" =~ ^[[:alnum:]\ \'_-]+$ ]] || fail "Ismda faqat harf, raqam, bo'sh joy bo'lsin."
 
 # 2. Tekshiruv
 say "2/6  Server tekshiruvi"
@@ -74,7 +77,7 @@ OLD="$HOME/.openclaw/eski-fayllar-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$OLD"
 for f in SOUL.md USER.md IDENTITY.md AGENTS.md vazifalar.md; do
   [ -f "$WS/$f" ] && cp "$WS/$f" "$OLD/"
-  cp "$REPO/workspace/$f" "$WS/$f"
+  sed "s/Jarvis/$NAME/g" "$REPO/workspace/$f" > "$WS/$f"
 done
 rm -f "$WS/BOOTSTRAP.md"
 
@@ -100,7 +103,7 @@ openclaw cron list | grep -E "Ertalabki|Heartbeat" || true
 echo
 echo "✅ Tayyor!"
 echo
-echo "   Endi Telegram'da botingizga yozing:  Salom Jarvis"
+echo "   Endi Telegram'da botingizga yozing:  Salom $NAME"
 echo
 echo "   Foydali buyruqlar:"
 echo "   openclaw status                 — hammasi ishlayaptimi"

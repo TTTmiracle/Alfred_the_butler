@@ -126,8 +126,8 @@ sudo systemctl restart ollama
 **4. Jarvis:**
 
 ```bash
-git clone https://github.com/TTTmiracle/jarvis.git
-cd jarvis
+git clone https://github.com/TTTmiracle/Alfred_the_butler.git
+cd Alfred_the_butler
 bash setup.sh        # на вопрос «Qaysi AI» → 6 (Ollama)
 ```
 
