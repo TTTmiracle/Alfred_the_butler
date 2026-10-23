@@ -69,6 +69,19 @@ bash setup.sh
 > Файлы характера на узбекском, но Jarvis отвечает на том языке, на котором вы пишете. Хотите всё на
 > русском — просто скажите ему: *«Отвечай всегда по-русски, запиши это в USER.md»*.
 
+### Нет сервера? Создайте «сервер» у себя на компьютере
+
+VPS — это просто другой компьютер. Чтобы попробовать, его можно создать внутри своего компьютера
+(контейнер). Нужно: [Podman](https://podman.io) или Docker на Linux или Mac.
+
+```bash
+git clone https://github.com/TTTmiracle/Alfred_the_butler.git
+bash Alfred_the_butler/konteyner.sh
+```
+
+Вы внутри `root@jarvis-server` — как на VPS. Дальше те же команды (`git clone`, `bash setup.sh`).
+Разница одна: выключили компьютер — выключился и Jarvis. Снова запустить: `bash konteyner.sh`, внутри `bash start.sh`.
+
 ---
 
 ## Как настроить Jarvis под себя

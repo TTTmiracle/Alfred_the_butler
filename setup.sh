@@ -5,10 +5,17 @@ set -euo pipefail
 cd "$(dirname "$0")"
 REPO="$(pwd)"
 
+# Server turi: haqiqiy VPS (systemd bor) yoki konteyner (systemd yo'q)
+if [ "$(uname)" = "Linux" ] && [ ! -d /run/systemd/system ]; then
+  MODE=konteyner
+else
+  MODE=server
+fi
+
 say()  { echo; echo "▶ $1"; }
 fail() { echo; echo "❌ $1"; exit 1; }
 
-echo "🤖 Jarvis o'rnatilmoqda"
+echo "🤖 Jarvis o'rnatilmoqda ($MODE rejimi)"
 
 # 1. Telegram ma'lumotlari
 say "1/6  Telegram"
@@ -48,7 +55,8 @@ cat <<'EOF2'
    6) Ollama       — mahalliy model, shu kompyuterda (bepul, kuchli kompyuter kerak)
 EOF2
 read -r -p "   Raqam (1-6): " CHOICE
-COMMON=(--non-interactive --accept-risk --flow quickstart --mode local --skip-channels --skip-ui --skip-search --install-daemon)
+COMMON=(--non-interactive --accept-risk --flow quickstart --mode local --skip-channels --skip-ui --skip-search)
+if [ "$MODE" = "server" ]; then COMMON+=(--install-daemon); else COMMON+=(--skip-daemon --skip-health); fi
 if [ "$CHOICE" = "6" ]; then
   curl -s -m 3 http://127.0.0.1:11434/api/version >/dev/null 2>&1 || fail "Ollama ishlamayapti. Avval Ollama'ni o'rnating va model yuklang: docs/mahalliy-ai.md"
   openclaw onboard "${COMMON[@]}" --auth-choice ollama
@@ -85,11 +93,15 @@ PATCH=$(mktemp --suffix=.json5)
 sed "s/__BOT_TOKEN__/$BOT_TOKEN/; s/__TELEGRAM_ID__/$TG_ID/g" "$REPO/xavfsiz-sozlama.json5" > "$PATCH"
 openclaw config patch --file "$PATCH"
 rm -f "$PATCH"
-openclaw gateway restart
+if [ "$MODE" = "server" ]; then
+  openclaw gateway restart
+else
+  bash "$REPO/start.sh"
+fi
 
 # 6. Ertalabki hisobot
 say "6/6  Ertalabki hisobot (har kuni 08:00, Toshkent vaqti)"
-sleep 5
+for i in $(seq 1 30); do openclaw gateway health >/dev/null 2>&1 && break; sleep 2; done
 if ! openclaw cron list 2>/dev/null | grep -q "Ertalabki hisobot"; then
   openclaw cron add \
     --name ertalabki-hisobot \
@@ -111,4 +123,8 @@ echo "   openclaw logs --follow          — nima bo'layotganini jonli ko'rish"
 echo "   openclaw cron run <ID>          — ertalabki hisobotni hozir sinash"
 echo "   openclaw gateway usage-cost     — qancha pul ketdi"
 echo "   openclaw security audit         — xavfsizlik tekshiruvi"
-echo "   openclaw gateway stop           — Jarvis'ni o'chirish"
+if [ "$MODE" = "server" ]; then
+  echo "   openclaw gateway stop           — Jarvis'ni o'chirish"
+else
+  echo "   bash start.sh                   — konteyner qayta yoqilganda Jarvis'ni ishga tushirish"
+fi

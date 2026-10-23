@@ -66,6 +66,19 @@ bash setup.sh
 
 Tugagach — Telegram'da botingizga yozing: **Salom Jarvis** 👋
 
+### Server yo'qmi? Kompyuteringizda "server" yarating
+
+VPS — bu shunchaki boshqa kompyuter. Sinab ko'rish uchun uni o'z kompyuteringiz ichida yaratish mumkin
+(konteyner). Kerak: Linux yoki Mac'da [Podman](https://podman.io) yoki Docker.
+
+```bash
+git clone https://github.com/TTTmiracle/Alfred_the_butler.git
+bash Alfred_the_butler/konteyner.sh
+```
+
+Siz `root@jarvis-server` ichidasiz — xuddi VPS kabi. Keyin yuqoridagi buyruqlar (`git clone`, `bash setup.sh`).
+Farqi bitta: kompyuteringiz o'chsa, Jarvis ham o'chadi. Qayta yoqish: `bash konteyner.sh`, ichida `bash start.sh`.
+
 ---
 
 ## Jarvis'ni o'zingizga moslash
