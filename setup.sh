@@ -20,7 +20,7 @@ echo "🤖 Jarvis o'rnatilmoqda ($MODE rejimi)"
 # 1. Telegram ma'lumotlari
 say "1/6  Telegram"
 echo "   @BotFather'da yaratgan botingiz tokeni (masalan 123456789:AAH...):"
-read -r -p "   BOT TOKEN: " BOT_TOKEN
+read -r -s -p "   BOT TOKEN (ekranda ko'rinmaydi): " BOT_TOKEN; echo
 [[ "$BOT_TOKEN" =~ ^[0-9]+:[A-Za-z0-9_-]+$ ]] || fail "Token noto'g'ri ko'rinishda. @BotFather'dan qayta nusxalang."
 echo "   Sizning Telegram ID raqamingiz (faqat raqam). Bilmasangiz: @userinfobot ga /start yozing."
 read -r -p "   TELEGRAM ID: " TG_ID
