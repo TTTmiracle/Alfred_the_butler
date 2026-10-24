@@ -5,6 +5,7 @@
 
 TOKEN="${1:-}"
 OK=0; BAD=0
+SUDO=""; [ "$(id -u)" -ne 0 ] && SUDO="sudo "   # root'da (konteyner, VPS) sudo kerak emas va o'rnatilmagan bo'lishi mumkin
 ok()   { echo "  ✅ $1"; OK=$((OK+1)); }
 bad()  { echo "  ❌ $1"; [ -n "$2" ] && echo "     👉 $2"; BAD=$((BAD+1)); }
 warn() { echo "  ⚠️  $1"; [ -n "$2" ] && echo "     👉 $2"; }
@@ -30,8 +31,13 @@ fi
 echo
 
 echo "2) Internet"
-read -r _ C _ T CODE <<< "$(timing -4 https://www.google.com)"
-if [ "$CODE" != "000" ]; then ok "Internet bor (Google: ${T}s)"; else bad "Internet yo'q" "Server tarmog'ini tekshiring"; fi
+# Bitta sayt sekin bo'lsa ham "internet yo'q" demaslik uchun: 3 ta manzil, faqat sarlavha (HEAD), birinchi javob yetarli
+NET_T=""
+for url in https://www.gstatic.com/generate_204 https://1.1.1.1/cdn-cgi/trace https://api.telegram.org; do
+  read -r T CODE <<< "$(curl -4 -sI -o /dev/null -m 8 -w "%{time_total} %{http_code}" "$url" 2>/dev/null)"
+  if [ -n "$CODE" ] && [ "$CODE" != "000" ]; then NET_T="$T"; break; fi
+done
+if [ -n "$NET_T" ]; then ok "Internet bor (${NET_T}s)"; else bad "Internet yo'q" "Server tarmog'ini tekshiring"; fi
 echo
 
 echo "3) Telegram"
@@ -57,9 +63,11 @@ if [ -n "$(ip -6 route show default 2>/dev/null)" ]; then
   read -r D C S T CODE <<< "$(timing -6 https://api.telegram.org)"
   if [ "$CODE" != "000" ]; then
     ok "IPv6 orqali ulanish: ${T}s"
+  elif grep -q '^precedence ::ffff:0:0/96' /etc/gai.conf 2>/dev/null; then
+    ok "IPv6 ishlamaydi, lekin IPv4 afzal qilingan (/etc/gai.conf) — kechikish bo'lmaydi"
   else
     warn "IPv6 orqali ulanib bo'lmadi — bot javoblari daqiqalab kechikishi mumkin" \
-         "Tuzatish: echo 'precedence ::ffff:0:0/96 100' | sudo tee -a /etc/gai.conf"
+         "Tuzatish: echo 'precedence ::ffff:0:0/96 100' | ${SUDO}tee -a /etc/gai.conf"
   fi
 fi
 
