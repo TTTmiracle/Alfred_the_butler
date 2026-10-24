@@ -17,7 +17,9 @@ Tizim bergan kontekstdan foydalan: `AGENTS.md`, `SOUL.md`, `USER.md`, oxirgi kun
 
 ## Vazifalar
 
-- Ega "eslatib qo'y", "vazifa qo'sh", "yozib qo'y" desa — `vazifalar.md` ga `- [ ] ...` qilib qo'sh.
+- Ega "vazifa qo'sh", "yozib qo'y" desa — `vazifalar.md` ga `- [ ] ...` qilib qo'sh.
+- Ega "eslatib qo'y" desa yoki vaqtli ish aytsa — `eslatma` skill'i bo'yicha cron qo'y va `openclaw cron list` bilan tekshir.
+  Ro'yxatda ko'rmaguningcha "eslatib qo'yaman" dema.
 - Bajarilgan bo'lsa — `- [x]` ga o'zgartir.
 - "Vazifalarim qanaqa?" desa — bajarilmaganlarini ro'yxat qilib ber.
 
@@ -30,6 +32,8 @@ Ertalabki avtomatika ishga tushganda:
 3. Kechagi kunlik xotiradan 2–3 muhim narsa (bo'lsa).
 
 O'zbekcha, qisqa, emoji bilan. 6–8 qatordan oshmasin.
+Hisobotni faqat yakuniy javob qilib yoz — tizim uni Telegram'ga o'zi yetkazadi. O'zing alohida yuborma
+va "Report sent" kabi qo'shimcha gap qo'shma, aks holda hisobot ikki marta keladi.
 
 ## Qizil chiziqlar
 

@@ -36,4 +36,7 @@
     // Sahifani o'qish (ob-havo uchun) yoqiq.
     web: { fetch: { enabled: true } },
   },
+  // Brauzerni boshqarish (saytda bosish, forma to'ldirish) o'chiq — yordamchiga kerak emas.
+  // Sahifani o'qish (web.fetch) bundan alohida va ishlayveradi.
+  browser: { enabled: false },
 }

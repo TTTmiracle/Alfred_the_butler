@@ -35,7 +35,7 @@ if [ -f "$AG" ] && ! grep -q "## Notion" "$AG"; then
 
 ## Notion
 
-Notion ulangan (MCP). Faqat egam ruxsat bergan sahifalarni ko'rasan.
+Notion ulangan (MCP). Faqat egang ruxsat bergan sahifalarni ko'rasan.
 
 - Ega "Notion'ga yoz", "Notion'ga saqla" desa — o'sha sahifaga yoz.
 - Notion'dan topgan narsangni aytganda — qaysi sahifadan olganingni ham ayt.
