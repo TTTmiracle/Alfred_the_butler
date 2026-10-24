@@ -129,11 +129,14 @@ openclaw status                  # всё ли работает
 openclaw logs --follow           # смотреть, что делает Jarvis, в реальном времени
 openclaw cron list               # запланированные задачи
 openclaw cron run <ID>           # запустить утренний отчёт прямо сейчас
-openclaw gateway usage-cost      # сколько потрачено
+openclaw gateway usage-cost      # сколько потрачено (для DeepSeek может показывать 0 — точная сумма: platform.deepseek.com)
 openclaw security audit          # проверка безопасности
 openclaw gateway restart         # перезапуск
 openclaw gateway stop            # выключить
 ```
+
+`/new` в Telegram — новый разговор. Пишите его после изменения SOUL.md, USER.md, AGENTS.md: Jarvis перечитает файлы.
+Чем длиннее разговор, тем дороже каждое сообщение — время от времени `/new` ещё и экономит деньги.
 
 Новая задача по расписанию (например, каждую пятницу в 18:00):
 
@@ -175,6 +178,9 @@ openclaw cron add --name juma --cron "0 18 * * 5" --tz Asia/Tashkent \
 | «Eski webhook qolgan» (остался старый webhook) | `curl "https://api.telegram.org/bot<TOKEN>/deleteWebhook?drop_pending_updates=true"` |
 | Бот не отвечает другому человеку | так и задумано. Добавить человека: `openclaw config set channels.telegram.allowFrom '[ID1, ID2]'` |
 | `openclaw: command not found` | закройте и откройте терминал или `source ~/.bashrc` |
+| Изменил SOUL.md, а бот говорит по-старому | `/new` в Telegram — новый разговор перечитает файлы |
+| `check.sh`: «IPv6 orqali ulanib bo'lmadi» | `echo 'precedence ::ffff:0:0/96 100' >> /etc/gai.conf` (не под root — через `sudo tee -a`), затем `bash check.sh` → ✅ |
+| Notion: «нет ни одной страницы» | страница не подключена к integration: на странице ⋯ → Connections → ваша integration |
 
 Дополнительно: `openclaw doctor --fix` — многие проблемы исправляет сам.
 

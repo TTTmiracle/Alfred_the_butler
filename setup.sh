@@ -18,7 +18,7 @@ fail() { echo; echo "❌ $1"; exit 1; }
 echo "🤖 Jarvis o'rnatilmoqda ($MODE rejimi)"
 
 # 1. Telegram ma'lumotlari
-say "1/6  Telegram"
+say "1/6  Telegram va AI"
 echo "   @BotFather'da yaratgan botingiz tokeni (masalan 123456789:AAH...):"
 read -r -s -p "   BOT TOKEN (ekranda ko'rinmaydi): " BOT_TOKEN; echo
 [[ "$BOT_TOKEN" =~ ^[0-9]+:[A-Za-z0-9_-]+$ ]] || fail "Token noto'g'ri ko'rinishda. @BotFather'dan qayta nusxalang."
@@ -28,6 +28,25 @@ read -r -p "   TELEGRAM ID: " TG_ID
 read -r -p "   Yordamchingiz ismi (Enter = Jarvis): " NAME
 NAME="${NAME:-Jarvis}"
 [[ "$NAME" =~ ^[[:alnum:]\ \'_-]+$ ]] || fail "Ismda faqat harf, raqam, bo'sh joy bo'lsin."
+
+# AI ham boshida so'raladi — keyin o'rnatish oxirigacha o'zi ishlaydi
+echo
+cat <<'EOF2'
+   Qaysi AI'dan foydalanasiz?
+   1) DeepSeek     — arzon, kartasi bilan to'lash oson
+   2) Google Gemini
+   3) OpenAI (ChatGPT)
+   4) OpenRouter   — bitta kalit bilan ko'p model
+   5) Anthropic (Claude)
+   6) Ollama       — mahalliy model, shu kompyuterda (bepul, kuchli kompyuter kerak)
+EOF2
+read -r -p "   Raqam (1-6): " CHOICE
+[[ "$CHOICE" =~ ^[1-6]$ ]] || fail "1 dan 6 gacha raqam kiriting."
+KEY=""
+if [ "$CHOICE" != "6" ]; then
+  read -r -s -p "   API kalit (ekranda ko'rinmaydi): " KEY; echo
+  [ -n "$KEY" ] || fail "Kalit bo'sh."
+fi
 
 # 2. Tekshiruv
 say "2/6  Server tekshiruvi"
@@ -44,25 +63,13 @@ command -v openclaw >/dev/null 2>&1 || fail "openclaw topilmadi. Terminalni yopi
 openclaw --version
 
 # 4. Model va kalit
-say "4/6  Model tanlash"
-cat <<'EOF2'
-   Qaysi AI'dan foydalanasiz?
-   1) DeepSeek     — arzon, kartasi bilan to'lash oson
-   2) Google Gemini
-   3) OpenAI (ChatGPT)
-   4) OpenRouter   — bitta kalit bilan ko'p model
-   5) Anthropic (Claude)
-   6) Ollama       — mahalliy model, shu kompyuterda (bepul, kuchli kompyuter kerak)
-EOF2
-read -r -p "   Raqam (1-6): " CHOICE
+say "4/6  Model ulanmoqda"
 COMMON=(--non-interactive --accept-risk --flow quickstart --mode local --skip-channels --skip-ui --skip-search)
 if [ "$MODE" = "server" ]; then COMMON+=(--install-daemon); else COMMON+=(--skip-daemon --skip-health); fi
 if [ "$CHOICE" = "6" ]; then
   curl -s -m 3 http://127.0.0.1:11434/api/version >/dev/null 2>&1 || fail "Ollama ishlamayapti. Avval Ollama'ni o'rnating va model yuklang: docs/mahalliy-ai.md"
   openclaw onboard "${COMMON[@]}" --auth-choice ollama
 else
-  read -r -s -p "   API kalit (ekranda ko'rinmaydi): " KEY; echo
-  [ -n "$KEY" ] || fail "Kalit bo'sh."
   case "$CHOICE" in
     1) openclaw onboard "${COMMON[@]}" --auth-choice deepseek-api-key   --deepseek-api-key "$KEY" ;;
     2) openclaw onboard "${COMMON[@]}" --auth-choice gemini-api-key     --gemini-api-key "$KEY" ;;
@@ -88,6 +95,17 @@ for f in SOUL.md USER.md IDENTITY.md AGENTS.md vazifalar.md; do
   sed "s/Jarvis/$NAME/g" "$REPO/workspace/$f" > "$WS/$f"
 done
 rm -f "$WS/BOOTSTRAP.md"
+# Skill'lar (masalan, eslatma) — ism va ID bilan
+if [ -d "$REPO/workspace/skills" ]; then
+  [ -d "$WS/skills" ] && cp -r "$WS/skills" "$OLD/"
+  for d in "$REPO"/workspace/skills/*/; do
+    s=$(basename "$d"); mkdir -p "$WS/skills/$s"
+    sed "s/Jarvis/$NAME/g; s/__TELEGRAM_ID__/$TG_ID/g" "$d/SKILL.md" > "$WS/skills/$s/SKILL.md"
+  done
+fi
+
+# Bot o'chiq paytda yozilgan eski xabarlar o'chadi — ishga tushganda ularga birdaniga javob bermaydi
+curl -4 -s -m 15 "https://api.telegram.org/bot${BOT_TOKEN}/deleteWebhook?drop_pending_updates=true" >/dev/null || true
 
 PATCH=$(mktemp --suffix=.json5)
 sed "s/__BOT_TOKEN__/$BOT_TOKEN/; s/__TELEGRAM_ID__/$TG_ID/g" "$REPO/xavfsiz-sozlama.json5" > "$PATCH"
@@ -108,7 +126,7 @@ if ! openclaw cron list 2>/dev/null | grep -q "Ertalabki hisobot"; then
     --display-name "Ertalabki hisobot" \
     --cron "0 8 * * *" --tz Asia/Tashkent \
     --message "Ertalabki hisobotni AGENTS.md dagi tartib bo'yicha tayyorla va yubor." \
-    --announce --channel telegram --to "$TG_ID" >/dev/null
+    --agent main --announce --channel telegram --to "$TG_ID" >/dev/null
 fi
 openclaw cron list | grep -E "Ertalabki|Heartbeat" || true
 

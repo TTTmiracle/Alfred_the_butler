@@ -126,11 +126,14 @@ openclaw status                  # hammasi ishlayaptimi
 openclaw logs --follow           # Jarvis nima qilayotganini jonli ko'rish
 openclaw cron list               # rejalashtirilgan ishlar
 openclaw cron run <ID>           # ertalabki hisobotni hozir sinash
-openclaw gateway usage-cost      # qancha pul ketdi
+openclaw gateway usage-cost      # qancha pul ketdi (DeepSeek uchun 0 ko'rsatishi mumkin — aniq summa: platform.deepseek.com)
 openclaw security audit          # xavfsizlik tekshiruvi
 openclaw gateway restart         # qayta ishga tushirish
 openclaw gateway stop            # o'chirish
 ```
+
+Telegram'da `/new` — yangi suhbat. SOUL.md, USER.md, AGENTS.md ni o'zgartirgandan keyin yozing: Jarvis fayllarni
+qaytadan o'qiydi. Suhbat uzaygan sari har xabar qimmatlashadi — vaqti-vaqti bilan `/new` pulni ham tejaydi.
 
 Yangi vaqtli ish qo'shish (masalan, har juma 18:00 da):
 
@@ -172,6 +175,9 @@ Hammasi `xavfsiz-sozlama.json5` da, izohlari bilan.
 | "Eski webhook qolgan" | `curl "https://api.telegram.org/bot<TOKEN>/deleteWebhook?drop_pending_updates=true"` |
 | Bot birovga javob bermaydi | to'g'ri — faqat sizga javob beradi. Boshqa odam qo'shish: `openclaw config set channels.telegram.allowFrom '[ID1, ID2]'` |
 | `openclaw: command not found` | terminalni yopib-oching yoki `source ~/.bashrc` |
+| SOUL.md ni o'zgartirdim, lekin bot eskicha gapiradi | Telegram'da `/new` — yangi suhbat fayllarni qaytadan o'qiydi |
+| `check.sh`: "IPv6 orqali ulanib bo'lmadi" | `echo 'precedence ::ffff:0:0/96 100' >> /etc/gai.conf` (root bo'lmasangiz — `sudo tee -a`), keyin `bash check.sh` → ✅ |
+| Notion'da "hech qanday sahifa yo'q" | sahifani integration'ga ulamagansiz: sahifada ⋯ → Connections → integration'ingiz |
 
 Qo'shimcha: `openclaw doctor --fix` — ko'p muammolarni o'zi tuzatadi.
 
